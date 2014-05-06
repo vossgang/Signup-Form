@@ -22,7 +22,10 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeTextWithNotification:) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChangeTextWithNotification:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,17 +41,17 @@
 
 - (void)textFieldDidChangeTextWithNotification:(NSNotification *)note
 {
-    self.signUpButton.enabled = [self passwordsMatch];
+    _signUpButton.enabled = [self passwordsMatch];
 }
 
 - (BOOL)passwordsMatch
 {
-    return [self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text];
+    return [_passwordTextField.text isEqualToString:_passwordConfirmTextField.text];
 }
 
 - (IBAction)signUp:(id)sender
 {
-    if (![self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text]) {
+    if (![self passwordsMatch]) {
         NSLog(@"form invalid: passwords don't match");
     }
     
