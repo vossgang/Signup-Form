@@ -8,7 +8,8 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordConfirmTextField;
@@ -21,6 +22,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChangeTextWithNotification:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+    
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -35,8 +42,23 @@
 // password and password confirmation should match
 // password strength checker / valid password
 
+
+-(void)textFieldDidChangeTextWithNotification:(NSNotification *)note
+{
+    _signUpButton.enabled = [self passWordsMatch];
+    
+}
+
+-(BOOL)passWordsMatch
+{
+    return [_passwordTextField.text isEqualToString:_passwordConfirmTextField.text];
+}
+
 - (IBAction)signUp:(id)sender
 {
+    if (![_passwordTextField.text isEqualToString:_passwordConfirmTextField.text]) {
+        NSLog(@"Form is invalid: Passwords Mismatch");
+    }
     
 }
 
